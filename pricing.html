@@ -1,0 +1,376 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Rawprint — Pricing</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;1,400&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{--ink:#1A1916;--parchment:#F0E8D8;--copper:#B8703A;--cl:#D4956A;--sage:#8FA89A;--mid:#6B6760;--light:#D5CCC0;--surf:rgba(240,232,216,.04);--bdr:rgba(240,232,216,.08);--bdr2:rgba(240,232,216,.15)}
+html{scroll-behavior:smooth}
+body{background:var(--ink);color:var(--parchment);font-family:'DM Sans',sans-serif;font-weight:300;min-height:100vh}
+
+/* NAV */
+nav{display:flex;justify-content:space-between;align-items:center;padding:20px 64px;border-bottom:1px solid var(--bdr)}
+.nav-logo{display:flex;align-items:center;gap:10px;text-decoration:none}
+.nav-logo img{width:20px;height:26px;object-fit:contain}
+.nav-wordmark{font-size:12px;font-weight:500;letter-spacing:.22em;text-transform:uppercase;color:var(--copper)}
+.back-link{font-size:12px;color:var(--mid);text-decoration:none;letter-spacing:.05em;transition:color .2s}
+.back-link:hover{color:var(--parchment)}
+
+/* HEADER */
+.page-header{padding:80px 64px 64px;max-width:1100px;margin:0 auto}
+.eyebrow{font-size:10px;font-weight:500;letter-spacing:.3em;text-transform:uppercase;color:var(--copper);margin-bottom:16px}
+.page-title{font-family:'Playfair Display',serif;font-size:clamp(36px,5vw,60px);font-weight:700;line-height:1.05;margin-bottom:20px}
+.page-title em{font-style:italic;font-weight:400;color:var(--copper)}
+.page-sub{font-size:16px;color:var(--mid);line-height:1.9;max-width:560px}
+
+/* COMPARISON CONTEXT */
+.context-bar{background:rgba(184,112,58,.08);border:1px solid rgba(184,112,58,.2);border-radius:2px;padding:16px 64px;margin:0 auto 0;max-width:none}
+.context-inner{max-width:1100px;margin:0 auto;display:flex;gap:32px;align-items:center;flex-wrap:wrap}
+.context-note{font-size:13px;color:var(--mid);line-height:1.7}
+.context-note strong{color:var(--copper);font-weight:500}
+
+/* AVAILABILITY BANNER */
+.avail-banner{padding:12px 64px;background:rgba(93,202,165,.06);border-bottom:1px solid rgba(93,202,165,.15)}
+.avail-inner{max-width:1100px;margin:0 auto;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px}
+.avail-text{font-size:12px;color:#5DCAA5;font-weight:500;letter-spacing:.05em}
+.avail-slots{display:flex;gap:16px}
+.slot-item{font-size:11px;color:var(--mid)}
+.slot-item span{font-weight:500;color:var(--parchment)}
+.slot-dot{display:inline-block;width:7px;height:7px;border-radius:50%;margin-right:5px}
+.slot-dot.open{background:#5DCAA5}
+.slot-dot.limited{background:#EF9F27}
+.slot-dot.full{background:#E24B4A}
+
+/* PACKAGES */
+.packages-section{padding:0 64px 80px;max-width:1100px;margin:0 auto}
+
+.pkg-grid{display:grid;grid-template-columns:1fr;gap:2px;margin-bottom:32px}
+
+.pkg-card{background:var(--surf);border:1px solid var(--bdr);padding:0;overflow:hidden;transition:border-color .2s}
+.pkg-card:hover{border-color:var(--bdr2)}
+.pkg-card.featured{border-color:rgba(184,112,58,.4);background:rgba(184,112,58,.04)}
+
+.pkg-inner{display:grid;grid-template-columns:1fr 280px;align-items:stretch}
+
+.pkg-body{padding:36px 40px}
+.pkg-badge-row{display:flex;align-items:center;gap:10px;margin-bottom:16px}
+.pkg-badge{font-size:10px;font-weight:500;letter-spacing:.18em;text-transform:uppercase;color:var(--copper)}
+.pkg-featured-tag{background:rgba(184,112,58,.15);border:1px solid rgba(184,112,58,.3);color:var(--copper);font-size:10px;font-weight:500;letter-spacing:.12em;text-transform:uppercase;padding:3px 10px;border-radius:20px}
+.pkg-exclusive-tag{background:rgba(93,202,165,.1);border:1px solid rgba(93,202,165,.25);color:#5DCAA5;font-size:10px;font-weight:500;letter-spacing:.12em;text-transform:uppercase;padding:3px 10px;border-radius:20px}
+.pkg-name{font-family:'Playfair Display',serif;font-size:28px;font-weight:700;color:var(--parchment);margin-bottom:8px;line-height:1.15}
+.pkg-tagline{font-size:14px;color:var(--mid);line-height:1.7;margin-bottom:24px;max-width:460px}
+.pkg-includes{display:flex;flex-direction:column;gap:8px}
+.pkg-inc-item{display:flex;gap:10px;align-items:flex-start;font-size:13px;color:var(--mid);line-height:1.5}
+.pkg-inc-item::before{content:'→';color:var(--copper);flex-shrink:0;font-size:11px;margin-top:2px}
+
+.pkg-cta{padding:36px 40px;border-left:1px solid var(--bdr);display:flex;flex-direction:column;justify-content:space-between;gap:20px}
+.pkg-price-block{}
+.pkg-amount{font-family:'Playfair Display',serif;font-size:40px;font-weight:700;color:var(--copper);line-height:1}
+.pkg-currency{font-size:14px;font-weight:400;color:var(--mid);margin-left:4px}
+.pkg-deposit{font-size:11px;color:var(--mid);margin-top:4px}
+.pkg-installment{font-size:11px;color:var(--sage);margin-top:3px}
+.pkg-savings{font-size:11px;color:#5DCAA5;margin-top:3px;font-style:italic}
+.pkg-availability{display:flex;align-items:center;gap:6px;font-size:11px;color:var(--mid);margin-top:8px}
+
+.pkg-apply-btn{display:block;background:var(--copper);color:var(--parchment);text-align:center;padding:14px 20px;border-radius:2px;text-decoration:none;font-size:12px;font-weight:500;letter-spacing:.1em;text-transform:uppercase;transition:background .2s}
+.pkg-apply-btn:hover{background:var(--cl)}
+.pkg-apply-btn.secondary{background:none;border:1px solid var(--bdr2);color:var(--light);transition:all .2s}
+.pkg-apply-btn.secondary:hover{border-color:var(--copper);color:var(--copper)}
+.pkg-apply-btn.exclusive{background:none;border:1px solid rgba(93,202,165,.3);color:#5DCAA5;transition:all .2s}
+.pkg-apply-btn.exclusive:hover{background:rgba(93,202,165,.08)}
+
+.pkg-note{font-size:11px;color:var(--mid);text-align:center;line-height:1.6;margin-top:6px}
+
+/* COMMUNITY */
+.community-row{display:grid;grid-template-columns:1fr 1fr;gap:2px;margin-top:2px}
+.community-card{background:var(--surf);border:1px solid var(--bdr);padding:28px 32px}
+.comm-label{font-size:10px;font-weight:500;letter-spacing:.2em;text-transform:uppercase;color:var(--copper);margin-bottom:10px}
+.comm-title{font-family:'Playfair Display',serif;font-size:20px;font-weight:700;color:var(--parchment);margin-bottom:6px}
+.comm-sub{font-size:13px;color:var(--mid);line-height:1.7;margin-bottom:16px}
+.comm-price{font-family:'Playfair Display',serif;font-size:28px;font-weight:700;color:var(--copper)}
+.comm-period{font-size:12px;color:var(--mid);margin-left:4px}
+
+/* INSTAPAY */
+.payment-section{background:rgba(240,232,216,.03);border-top:1px solid var(--bdr);padding:64px}
+.payment-inner{max-width:1100px;margin:0 auto;display:grid;grid-template-columns:1fr 1fr;gap:80px;align-items:center}
+.pay-text-label{font-size:10px;font-weight:500;letter-spacing:.25em;text-transform:uppercase;color:var(--copper);margin-bottom:12px}
+.pay-text-title{font-family:'Playfair Display',serif;font-size:28px;font-weight:700;color:var(--parchment);margin-bottom:12px;line-height:1.2}
+.pay-text-body{font-size:14px;color:var(--mid);line-height:1.9;margin-bottom:24px}
+.pay-steps{display:flex;flex-direction:column;gap:10px}
+.pay-step{display:flex;gap:14px;align-items:flex-start;font-size:13px;color:var(--mid);line-height:1.5}
+.pay-step-num{width:22px;height:22px;border-radius:50%;background:rgba(184,112,58,.15);border:1px solid rgba(184,112,58,.3);display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:500;color:var(--copper);flex-shrink:0}
+.pay-qr-block{display:flex;flex-direction:column;align-items:center;gap:14px}
+.qr-frame{background:white;padding:14px;border-radius:4px}
+.qr-frame img{display:block;width:160px;height:160px}
+.pay-handle{font-size:13px;font-weight:500;color:var(--copper);letter-spacing:.04em}
+.pay-btn{display:block;background:rgba(184,112,58,.12);border:1px solid rgba(184,112,58,.3);color:var(--copper);padding:12px 32px;border-radius:2px;font-size:12px;font-weight:500;letter-spacing:.1em;text-transform:uppercase;text-decoration:none;text-align:center;transition:all .2s;width:100%}
+.pay-btn:hover{background:rgba(184,112,58,.22)}
+.pay-caption{font-size:11px;color:var(--mid);text-align:center;line-height:1.6}
+
+/* FAQ */
+.faq-section{padding:64px;border-top:1px solid var(--bdr)}
+.faq-inner{max-width:720px;margin:0 auto}
+.faq-label{font-size:10px;font-weight:500;letter-spacing:.25em;text-transform:uppercase;color:var(--copper);margin-bottom:24px}
+.faq-item{border-bottom:1px solid var(--bdr);padding:18px 0;cursor:pointer}
+.faq-item:last-child{border-bottom:none}
+.faq-q{font-size:14px;font-weight:400;color:var(--parchment);display:flex;justify-content:space-between;align-items:center;gap:12px;line-height:1.5}
+.faq-icon{font-size:18px;color:var(--copper);flex-shrink:0;font-weight:300;transition:transform .2s}
+.faq-a{font-size:13px;color:var(--mid);line-height:1.8;max-height:0;overflow:hidden;transition:max-height .3s ease,padding .3s}
+.faq-item.open .faq-a{max-height:200px;padding-top:12px}
+.faq-item.open .faq-icon{transform:rotate(45deg)}
+
+/* FOOTER */
+footer{border-top:1px solid var(--bdr);padding:40px 64px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:16px}
+.footer-note{font-size:12px;color:var(--mid)}
+.footer-links{display:flex;gap:24px}
+.footer-links a{font-size:12px;color:var(--mid);text-decoration:none;transition:color .2s}
+.footer-links a:hover{color:var(--parchment)}
+
+@media(max-width:900px){
+  nav,.page-header,.packages-section,.payment-section,.faq-section,footer{padding-left:24px;padding-right:24px}
+  .context-bar,.avail-banner{padding-left:24px;padding-right:24px}
+  .pkg-inner{grid-template-columns:1fr}
+  .pkg-cta{border-left:none;border-top:1px solid var(--bdr)}
+  .payment-inner,.community-row{grid-template-columns:1fr}
+}
+</style>
+</head>
+<body>
+
+<nav>
+  <a href="index.html" class="nav-logo">
+    <img src="2.png" alt="Rawprint">
+    <span class="nav-wordmark">Rawprint</span>
+  </a>
+  <a href="index.html" class="back-link">← Back to home</a>
+</nav>
+
+<!-- AVAILABILITY -->
+<div class="avail-banner">
+  <div class="avail-inner">
+    <div class="avail-text">Session availability — April 2025</div>
+    <div class="avail-slots">
+      <div class="slot-item"><span class="slot-dot open"></span>The Conversation — <span>3 spots open</span></div>
+      <div class="slot-item"><span class="slot-dot limited"></span>Blueprint — <span>2 spots remaining</span></div>
+      <div class="slot-item"><span class="slot-dot full"></span>90-Day — <span>By conversation only</span></div>
+    </div>
+  </div>
+</div>
+
+<!-- HEADER -->
+<div class="page-header">
+  <div class="eyebrow">Pricing</div>
+  <h1 class="page-title">Choose the depth<br><em>that's right for you.</em></h1>
+  <p class="page-sub">Three packages, one question: how much do you want to change? All sessions are one hour. All reports are personal. None of this is therapy — it's a life design process that starts with actually understanding yourself.</p>
+</div>
+
+<!-- COMPARISON CONTEXT -->
+<div class="context-bar">
+  <div class="context-inner">
+    <div class="context-note"><strong>For context:</strong> A single therapy session in Alexandria costs 800–1,200 EGP. The Blueprint is three sessions' worth of work — with a system you keep, a report you can return to, and four weeks of follow-up. This is not therapy. It's the work you do before, or alongside it.</div>
+  </div>
+</div>
+
+<!-- PACKAGES -->
+<div class="packages-section" style="margin-top:48px">
+<div class="pkg-grid">
+
+  <!-- STARTER -->
+  <div class="pkg-card">
+    <div class="pkg-inner">
+      <div class="pkg-body">
+        <div class="pkg-badge-row"><div class="pkg-badge">01 — The Conversation</div></div>
+        <div class="pkg-name">The Conversation</div>
+        <div class="pkg-tagline">For people who want to understand what's actually happening — without committing to a longer process. A real session. A clear summary. One habit to start with.</div>
+        <div class="pkg-includes">
+          <div class="pkg-inc-item">75-minute one-on-one session (online or in-person, Alexandria)</div>
+          <div class="pkg-inc-item">2-page written summary — your key patterns, in plain language</div>
+          <div class="pkg-inc-item">One anchor habit, chosen specifically for your psychology</div>
+          <div class="pkg-inc-item">One regulation tool with a free worksheet link</div>
+          <div class="pkg-inc-item">15-minute follow-up call (2 weeks after)</div>
+        </div>
+      </div>
+      <div class="pkg-cta">
+        <div class="pkg-price-block">
+          <div><span class="pkg-amount">500</span><span class="pkg-currency">EGP</span></div>
+          <div class="pkg-availability" style="margin-top:8px"><span class="slot-dot open"></span> 3 spots open this month</div>
+        </div>
+        <div>
+          <a href="https://docs.google.com/forms/d/e/1FAIpQLSfvm2mOgBSGWS3o7q7hk3TkKM9gKb0aO88hMuTIi0la6-WX9A/viewform?usp=publish-editor" class="pkg-apply-btn" target="_blank">Apply for this session</a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- BLUEPRINT -->
+  <div class="pkg-card featured">
+    <div class="pkg-inner">
+      <div class="pkg-body">
+        <div class="pkg-badge-row">
+          <div class="pkg-badge">02 — The Blueprint</div>
+          <div class="pkg-featured-tag">Most chosen</div>
+        </div>
+        <div class="pkg-name">The Blueprint</div>
+        <div class="pkg-tagline">The full process. A complete psychological profile, a personalized life system, a 30-day plan, and four weeks of follow-up. This is the work most people need to do once — and haven't been able to find.</div>
+        <div class="pkg-includes">
+          <div class="pkg-inc-item">Everything in The Conversation</div>
+          <div class="pkg-inc-item">Full 5-section Blueprint Report — patterns, limiting beliefs, habit stack, practice recommendations, 30-day plan, stuck points</div>
+          <div class="pkg-inc-item">Recommended Practice Stack with 3–5 targeted worksheets (free, via Therapist Aid)</div>
+          <div class="pkg-inc-item">Weekly check-in analysis for 4 weeks — pattern tracking, behavioral observations</div>
+          <div class="pkg-inc-item">Community membership — 3 months (Life Circles + weekly Sunday prompt)</div>
+          <div class="pkg-inc-item">Month 1 personalized review email (written from your actual check-in data)</div>
+        </div>
+      </div>
+      <div class="pkg-cta">
+        <div class="pkg-price-block">
+          <div><span class="pkg-amount">2,500</span><span class="pkg-currency">EGP</span></div>
+          <div class="pkg-deposit">500 EGP deposit to confirm</div>
+          <div class="pkg-installment">Installments available</div>
+          <div class="pkg-savings">Pay in full → save 100 EGP (2,400 EGP) + free Habits Scorecard session</div>
+          <div class="pkg-availability"><span class="slot-dot limited"></span> 2 spots remaining this month</div>
+        </div>
+        <div>
+          <a href="https://docs.google.com/forms/d/e/1FAIpQLSfvm2mOgBSGWS3o7q7hk3TkKM9gKb0aO88hMuTIi0la6-WX9A/viewform?usp=publish-editor" class="pkg-apply-btn" target="_blank">Apply for this session</a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 90-DAY -->
+  <div class="pkg-card">
+    <div class="pkg-inner">
+      <div class="pkg-body">
+        <div class="pkg-badge-row">
+          <div class="pkg-badge">03 — The 90-Day System</div>
+          <div class="pkg-exclusive-tag">By conversation only</div>
+        </div>
+        <div class="pkg-name">The 90-Day System</div>
+        <div class="pkg-tagline">Three months of genuine structural change — not a challenge, a calibration. Built for people who are ready to go deep and stay accountable for the long haul.</div>
+        <div class="pkg-includes">
+          <div class="pkg-inc-item">Everything in The Blueprint</div>
+          <div class="pkg-inc-item">Extended 90-day roadmap — Month 2 builds, Month 3 integrates</div>
+          <div class="pkg-inc-item">Biweekly 30-minute calls across the full 90 days (calls across the full 90 days)</div>
+          <div class="pkg-inc-item">Day 45 re-analysis — comparing original report against 6 weeks of real data</div>
+          <div class="pkg-inc-item">Pattern tracking framework built from your specific patterns</div>
+          <div class="pkg-inc-item">Community membership — 6 months</div>
+        </div>
+      </div>
+      <div class="pkg-cta">
+        <div class="pkg-price-block">
+          <div style="font-size:14px;color:var(--mid);line-height:1.7;margin-bottom:8px">Pricing is discussed after your initial conversation.</div>
+        </div>
+        <div>
+          <a href="https://wa.me/201224921659" class="pkg-apply-btn exclusive" target="_blank">WhatsApp to start →</a>
+          <div class="pkg-note">01224921659 · 10 minutes · no pitch</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<!-- COMMUNITY -->
+<div class="community-row">
+  <div class="community-card">
+    <div class="comm-label">Community only</div>
+    <div class="comm-title">Life Circles</div>
+    <div class="comm-sub">Weekly Sunday prompts, small circles matched by theme, partner offers, honest conversation. No session required to join.</div>
+    <div><span class="comm-price">200</span><span class="comm-period">EGP / month</span></div>
+  </div>
+  <div class="community-card">
+    <div class="comm-label">Outside Egypt?</div>
+    <div class="comm-title">Gulf & Diaspora</div>
+    <div class="comm-sub">Blueprint and 90-Day packages are available in USD for clients based outside Egypt. Pricing and payment via WhatsApp — no public listing.</div>
+    <a href="https://wa.me/201224921659" style="display:inline-block;margin-top:16px;font-size:12px;color:var(--copper);text-decoration:none;border-bottom:1px solid rgba(184,112,58,.3);padding-bottom:2px">Reach out directly →</a>
+  </div>
+</div>
+
+<p style="font-size:12px;color:var(--mid);margin-top:20px;line-height:1.8">Sessions are in Arabic and/or English. Rawprint is a life design project — not a clinical therapy service. If themes in your session suggest the value of professional support, we'll say so clearly.</p>
+</div>
+
+<!-- PAYMENT -->
+<div class="payment-section">
+  <div class="payment-inner">
+    <div>
+      <div class="pay-text-label">How to pay</div>
+      <h2 class="pay-text-title">Simple.<br>No registration required.</h2>
+      <p class="pay-text-body">Pay your deposit via Instapay — Egyptian banks only. Include your name in the payment note. Once received, you'll get a confirmation within 2 hours and a booking link.</p>
+      <div class="pay-steps">
+        <div class="pay-step"><div class="pay-step-num">1</div>Apply via the form or WhatsApp</div>
+        <div class="pay-step"><div class="pay-step-num">2</div>Receive confirmation and deposit amount</div>
+        <div class="pay-step"><div class="pay-step-num">3</div>Pay deposit via Instapay (scan QR or tap link)</div>
+        <div class="pay-step"><div class="pay-step-num">4</div>Receive session booking confirmation within 2 hours</div>
+      </div>
+    </div>
+    <div class="pay-qr-block">
+      <div class="qr-frame">
+        <img src="https://api.qrserver.com/v1/create-qr-code/?size=160x160&data=https://ipn.eg/S/rawprint.co/instapay/5GxEhv&color=1A1916&bgcolor=ffffff&margin=2&format=png" alt="Rawprint Instapay QR" width="160" height="160">
+      </div>
+      <div class="pay-handle">rawprint.co@instapay</div>
+      <a href="https://ipn.eg/S/rawprint.co/instapay/5GxEhv" class="pay-btn" target="_blank">Pay via Instapay →</a>
+      <div class="pay-caption">Scan QR or tap to pay<br>Add your name in the payment note<br><span style="font-size:10px;color:#3A3835">Powered by InstaPay · Egyptian banks</span></div>
+    </div>
+  </div>
+</div>
+
+<!-- FAQ -->
+<div class="faq-section">
+  <div class="faq-inner">
+    <div class="faq-label">Common questions</div>
+
+    <div class="faq-item" onclick="toggleFaq(this)">
+      <div class="faq-q">What's the difference between this and therapy? <span class="faq-icon">+</span></div>
+      <div class="faq-a">Therapy is clinical, licensed, and designed to treat diagnosed conditions. Rawprint is a life design process — it's for people who are functioning but feel misaligned. We work with patterns, systems, and habits, not diagnoses. If your session suggests you'd benefit from clinical support, we'll tell you directly and help you find the right person.</div>
+    </div>
+
+    <div class="faq-item" onclick="toggleFaq(this)">
+      <div class="faq-q">How does the session actually work? <span class="faq-icon">+</span></div>
+      <div class="faq-a">One hour. Unscripted. You fill a short application form before — this helps calibrate the session, not screen you. The conversation goes wherever is honest: work, relationships, childhood, patterns, what you want but can't say out loud. After, we analyze the session and produce your report within 72 hours.</div>
+    </div>
+
+    <div class="faq-item" onclick="toggleFaq(this)">
+      <div class="faq-q">Can I pay in installments? <span class="faq-icon">+</span></div>
+      <div class="faq-a">Yes, for Blueprint and 90-Day packages. Blueprint: deposit confirms the session, first installment confirms the report delivery, second installment confirms community access. 90-Day: three installments across the 90 days. You never pay for something before it's delivered to you.</div>
+    </div>
+
+    <div class="faq-item" onclick="toggleFaq(this)">
+      <div class="faq-q">Is the session online or in person? <span class="faq-icon">+</span></div>
+      <div class="faq-a">Both options are available. In-person sessions are in Alexandria. Online sessions are via Google Meet or Zoom — same depth, same process. Most people choose based on comfort, not location.</div>
+    </div>
+
+    <div class="faq-item" onclick="toggleFaq(this)">
+      <div class="faq-q">Will my session be kept private? <span class="faq-icon">+</span></div>
+      <div class="faq-a">Full privacy. Your session content, report, and check-in data are never shared without explicit written consent. If we ever use anonymized stories for content, we'll ask you directly — and you can decline with no impact on your service. See our Privacy Policy for full details.</div>
+    </div>
+
+    <div class="faq-item" onclick="toggleFaq(this)">
+      <div class="faq-q">What if it doesn't work for me? <span class="faq-icon">+</span></div>
+      <div class="faq-a">The deposit is non-refundable once your session slot is confirmed — it holds a real hour of time. If the session genuinely didn't deliver what it promised, we'll have an honest conversation about it. We'd rather you leave with something useful than leave at all.</div>
+    </div>
+
+  </div>
+</div>
+
+<footer>
+  <div class="footer-note">© 2025 Rawprint · Egypt · hellorawprint@gmail.com · 01224921659</div>
+  <div class="footer-links">
+    <a href="index.html">Home</a>
+    <a href="privacy.html">Privacy</a>
+    <a href="https://wa.me/201224921659" target="_blank">WhatsApp</a>
+    <a href="https://www.instagram.com/rawprint.co" target="_blank">Instagram</a>
+    <a href="https://www.youtube.com/@RAWPRINT-n6o" target="_blank">YouTube</a>
+  </div>
+</footer>
+
+<script>
+function toggleFaq(item) {
+  const wasOpen = item.classList.contains('open');
+  document.querySelectorAll('.faq-item').forEach(i => i.classList.remove('open'));
+  if (!wasOpen) item.classList.add('open');
+}
+</script>
+</body>
+</html>

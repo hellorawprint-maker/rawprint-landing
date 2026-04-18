@@ -1,0 +1,355 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Rawprint — Design a life that fits who you are</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;1,400&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;1,9..40,300&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{--ink:#1A1916;--parchment:#F0E8D8;--copper:#B8703A;--copper-light:#D4956A;--sage:#8FA89A;--mid:#6B6760;--light:#D5CCC0;--surface:#E8E0D0}
+html{scroll-behavior:smooth}
+body{background:var(--ink);color:var(--parchment);font-family:'DM Sans',sans-serif;font-weight:300;font-size:16px;line-height:1.7;overflow-x:hidden}
+nav{position:fixed;top:0;left:0;right:0;z-index:100;display:flex;justify-content:space-between;align-items:center;padding:20px 64px;background:linear-gradient(to bottom,rgba(26,25,22,.97),transparent)}
+.nav-logo{display:flex;align-items:center;gap:10px;text-decoration:none}
+.nav-logo img{width:22px;height:28px;object-fit:contain}
+.nav-wordmark{font-family:'DM Sans',sans-serif;font-size:13px;font-weight:500;letter-spacing:.22em;text-transform:uppercase;color:var(--copper)}
+.nav-links{display:flex;gap:32px;align-items:center}
+.nav-links a{font-size:13px;color:var(--light);text-decoration:none;letter-spacing:.05em;transition:color .2s}
+.nav-links a:hover{color:var(--parchment)}
+.nav-cta{background:var(--copper)!important;color:var(--parchment)!important;padding:9px 22px;border-radius:2px;font-weight:500!important}
+.nav-cta:hover{background:var(--copper-light)!important}
+
+
+.hero{position:relative;min-height:100vh;display:flex;align-items:center;padding:120px 64px 80px}
+.hero-bg-line{position:absolute;right:64px;top:50%;transform:translateY(-50%);width:1px;height:60vh;background:linear-gradient(to bottom,transparent,var(--copper),transparent);opacity:.3}
+.hero-content{max-width:700px}
+.hero-label{font-size:11px;font-weight:500;letter-spacing:.3em;text-transform:uppercase;color:var(--copper);margin-bottom:32px;opacity:0;animation:fadeUp .8s ease .2s forwards}
+.hero-title{font-family:'Playfair Display',serif;font-size:clamp(44px,7vw,88px);font-weight:700;line-height:1.0;letter-spacing:-.02em;color:var(--parchment);margin-bottom:24px;opacity:0;animation:fadeUp .8s ease .35s forwards}
+.hero-title em{font-style:italic;font-weight:400;color:var(--copper)}
+.hero-sub{font-size:17px;color:var(--mid);line-height:1.8;max-width:520px;margin-bottom:48px;opacity:0;animation:fadeUp .8s ease .5s forwards}
+.hero-sub strong{color:var(--light);font-weight:400}
+.hero-actions{display:flex;gap:20px;align-items:center;flex-wrap:wrap;opacity:0;animation:fadeUp .8s ease .65s forwards}
+.btn-primary{background:var(--copper);color:var(--parchment);padding:16px 36px;border-radius:2px;font-size:14px;font-weight:500;letter-spacing:.08em;text-decoration:none;text-transform:uppercase;transition:background .2s,transform .1s;display:inline-block}
+.btn-primary:hover{background:var(--copper-light);transform:translateY(-1px)}
+.btn-ghost{color:var(--light);font-size:13px;text-decoration:none;border-bottom:1px solid rgba(213,204,192,.3);padding-bottom:2px;transition:color .2s,border-color .2s}
+.btn-ghost:hover{color:var(--parchment);border-color:var(--parchment)}
+.statement{background:var(--copper);padding:20px 64px}
+.statement-inner{display:flex;align-items:center;gap:32px;max-width:1100px;margin:0 auto;flex-wrap:wrap}
+.statement p{font-family:'Playfair Display',serif;font-size:17px;font-style:italic;color:var(--parchment);flex:1;min-width:280px}
+.statement-divider{width:1px;height:40px;background:rgba(240,232,216,.3);flex-shrink:0}
+.section{padding:120px 64px;max-width:1200px;margin:0 auto}
+.section-label{font-size:10px;font-weight:500;letter-spacing:.3em;text-transform:uppercase;color:var(--copper);margin-bottom:16px}
+.section-title{font-family:'Playfair Display',serif;font-size:clamp(32px,4vw,52px);font-weight:700;line-height:1.1;color:var(--parchment);margin-bottom:64px;max-width:600px}
+.pillars{display:grid;grid-template-columns:repeat(3,1fr);gap:2px}
+.pillar{background:rgba(240,232,216,.04);padding:48px 36px;border:1px solid rgba(240,232,216,.08);position:relative;overflow:hidden}
+.pillar::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:var(--copper);transform:scaleX(0);transition:transform .3s;transform-origin:left}
+.pillar:hover::before{transform:scaleX(1)}
+.pillar-num{font-family:'Playfair Display',serif;font-size:48px;font-weight:700;color:var(--copper);opacity:.25;margin-bottom:16px;line-height:1}
+.pillar-title{font-size:18px;font-weight:500;color:var(--parchment);margin-bottom:12px}
+.pillar-body{font-size:14px;color:var(--mid);line-height:1.8}
+.for-section{background:rgba(240,232,216,.03);border-top:1px solid rgba(240,232,216,.08);border-bottom:1px solid rgba(240,232,216,.08)}
+.for-inner{max-width:1200px;margin:0 auto;padding:120px 64px;display:grid;grid-template-columns:1fr 1fr;gap:80px;align-items:center}
+.for-quote{font-family:'Playfair Display',serif;font-size:clamp(22px,3vw,32px);font-style:italic;line-height:1.5;color:var(--parchment);border-left:2px solid var(--copper);padding-left:32px}
+.for-quote span{color:var(--copper)}
+.for-list{display:flex;flex-direction:column;gap:24px}
+.for-item{display:flex;gap:20px;align-items:flex-start}
+.for-marker{width:6px;height:6px;border-radius:50%;background:var(--copper);flex-shrink:0;margin-top:8px}
+.for-item p{font-size:15px;color:var(--mid);line-height:1.7}
+.for-item p strong{color:var(--light);font-weight:400}
+.fragment-section{padding:120px 64px;max-width:1200px;margin:0 auto}
+.fragment-card{background:var(--surface);color:var(--ink);border-radius:4px;padding:64px 72px;max-width:720px;position:relative}
+.fragment-card::before{content:'"';font-family:'Playfair Display',serif;font-size:120px;color:var(--copper);opacity:.15;position:absolute;top:16px;left:48px;line-height:1;font-weight:700}
+.fragment-text{font-family:'Playfair Display',serif;font-size:clamp(18px,2.5vw,24px);font-style:italic;line-height:1.6;color:var(--ink);margin-bottom:32px;position:relative}
+.fragment-meta{font-size:12px;font-weight:500;letter-spacing:.2em;text-transform:uppercase;color:var(--mid)}
+.process-section{padding:0 64px 120px;max-width:1200px;margin:0 auto}
+.process-steps{display:grid;grid-template-columns:repeat(4,1fr);gap:2px;margin-top:64px}
+.step{padding:40px 32px;background:rgba(240,232,216,.03);border:1px solid rgba(240,232,216,.06)}
+.step-num{font-family:'Playfair Display',serif;font-size:13px;font-weight:700;color:var(--copper);letter-spacing:.1em;margin-bottom:20px}
+.step-title{font-size:15px;font-weight:500;color:var(--parchment);margin-bottom:10px}
+.step-body{font-size:13px;color:var(--mid);line-height:1.7}
+.mvp-section{background:var(--copper);padding:80px 64px}
+.mvp-inner{max-width:800px;margin:0 auto;text-align:center}
+.mvp-tag{display:inline-block;background:rgba(26,25,22,.2);color:var(--parchment);font-size:10px;font-weight:500;letter-spacing:.25em;text-transform:uppercase;padding:6px 16px;border-radius:20px;margin-bottom:24px}
+.mvp-title{font-family:'Playfair Display',serif;font-size:clamp(28px,4vw,44px);font-weight:700;color:var(--parchment);margin-bottom:20px;line-height:1.2}
+.mvp-body{font-size:16px;color:rgba(240,232,216,.75);line-height:1.8;margin-bottom:36px;max-width:520px;margin-left:auto;margin-right:auto}
+.btn-dark{background:var(--ink);color:var(--parchment);padding:16px 40px;border-radius:2px;font-size:14px;font-weight:500;letter-spacing:.1em;text-decoration:none;text-transform:uppercase;display:inline-block;transition:background .2s}
+.btn-dark:hover{background:#2d2c28}
+.mvp-note{margin-top:20px;font-size:12px;color:rgba(240,232,216,.5)}
+.pricing-section{padding:80px 64px;border-top:1px solid rgba(240,232,216,.06)}
+.pricing-inner{max-width:960px;margin:0 auto}
+.pricing-grid{display:grid;grid-template-columns:1fr 220px;gap:64px;align-items:start}
+.packages{display:flex;flex-direction:column;gap:2px;margin-top:32px}
+.pkg{background:rgba(240,232,216,.04);border:1px solid rgba(240,232,216,.07);padding:18px 22px;display:flex;justify-content:space-between;align-items:center;gap:16px;transition:border-color .2s}
+.pkg:hover{border-color:rgba(240,232,216,.15)}
+.pkg.featured{border-color:rgba(184,112,58,.45);background:rgba(184,112,58,.06)}
+.pkg-name{font-size:14px;font-weight:500;color:var(--parchment)}
+.pkg-desc{font-size:12px;color:var(--mid);margin-top:3px}
+.pkg-price{text-align:right;flex-shrink:0}
+.pkg-amount{font-family:'Playfair Display',serif;font-size:20px;font-weight:700;color:var(--copper)}
+.pkg-dep{font-size:11px;color:var(--mid);margin-top:2px}
+.pay-panel{display:flex;flex-direction:column;align-items:center;gap:14px;padding-top:32px}
+.qr-frame{background:white;padding:14px;border-radius:4px}
+.qr-frame img{display:block;width:148px;height:148px}
+.pay-handle{font-size:12px;font-weight:500;color:var(--copper);text-align:center}
+.pay-btn{display:block;background:rgba(184,112,58,.14);border:1px solid rgba(184,112,58,.35);color:var(--copper);padding:10px 0;border-radius:2px;font-size:12px;font-weight:500;letter-spacing:.08em;text-transform:uppercase;text-decoration:none;text-align:center;transition:all .2s;width:100%}
+.pay-btn:hover{background:rgba(184,112,58,.26)}
+.pay-note{font-size:11px;color:var(--mid);text-align:center;line-height:1.6}
+footer{background:rgba(240,232,216,.03);border-top:1px solid rgba(240,232,216,.08);padding:64px}
+.footer-inner{max-width:1200px;margin:0 auto;display:flex;justify-content:space-between;align-items:flex-start;gap:40px;flex-wrap:wrap}
+.footer-brand{font-size:11px;letter-spacing:.25em;text-transform:uppercase;color:var(--copper);font-weight:500;margin-bottom:10px}
+.footer-tagline{font-size:13px;color:var(--mid);max-width:220px;line-height:1.7}
+.footer-links{display:flex;flex-direction:column;gap:10px}
+.footer-links a{font-size:13px;color:var(--mid);text-decoration:none;transition:color .2s}
+.footer-links a:hover{color:var(--parchment)}
+.footer-disclaimer{font-size:11px;color:#3A3835;max-width:280px;line-height:1.7}
+.footer-bottom{max-width:1200px;margin:40px auto 0;padding-top:20px;border-top:1px solid rgba(240,232,216,.06);display:flex;justify-content:space-between;font-size:11px;color:#3A3835;flex-wrap:wrap;gap:8px}
+@keyframes fadeUp{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}
+.reveal{opacity:0;transform:translateY(24px);transition:opacity .7s ease,transform .7s ease}
+.reveal.visible{opacity:1;transform:translateY(0)}
+@media(max-width:900px){
+  nav{padding:16px 24px}.nav-links{display:none}
+  .hero,.section,.fragment-section,.process-section{padding-left:24px;padding-right:24px}
+  .statement,.mvp-section,.pricing-section{padding-left:24px;padding-right:24px}
+  .pillars,.process-steps{grid-template-columns:1fr}
+  .for-inner{grid-template-columns:1fr;gap:40px;padding:64px 24px}
+  .pricing-grid{grid-template-columns:1fr}
+  .pay-panel{flex-direction:row;flex-wrap:wrap;justify-content:center;padding-top:0}
+  footer{padding:40px 24px}
+}
+</style>
+</head>
+<body>
+
+<nav>
+  <a href="#" class="nav-logo">
+    <img src="2.png" alt="Rawprint">
+    <span class="nav-wordmark">Rawprint</span>
+  </a>
+  <div class="nav-links">
+    <a href="#what">What it is</a>
+    <a href="#process">How it works</a>
+    <a href="pricing.html">Pricing</a>
+    <a href="#apply" class="nav-cta">Apply</a>
+  </div>
+</nav>
+
+<section class="hero">
+  <div class="hero-bg-line"></div>
+  <div class="hero-content">
+    <div class="hero-label" id="heroLabel">Life OS · Personal Blueprint · Egypt</div>
+    <h1 class="hero-title">
+      <span id="heroLine1">You're not broken.</span><br>
+      <em id="heroLine2">You're misaligned.</em>
+    </h1>
+    <p class="hero-sub" id="heroSub">Most advice fails because it wasn't designed for you. Rawprint helps you <strong>understand yourself first</strong> — then builds a life system around who you actually are.</p>
+    <div class="hero-actions">
+      <a href="https://docs.google.com/forms/d/e/1FAIpQLSfvm2mOgBSGWS3o7q7hk3TkKM9gKb0aO88hMuTIi0la6-WX9A/viewform?usp=publish-editor" class="btn-primary" id="heroCta" target="_blank">Apply for a session</a>
+      <a href="#what" class="btn-ghost" id="heroGhost">See how it works →</a>
+    </div>
+  </div>
+</section>
+
+<div class="statement">
+  <div class="statement-inner">
+    <p>"The problem isn't that you can't change. It's that you keep trying to change using a system designed for someone else."</p>
+    <div class="statement-divider"></div>
+    <p>"Most people don't have a discipline problem. They have a system that wasn't built for them."</p>
+  </div>
+</div>
+
+<div id="what" class="section">
+  <div class="section-label reveal" id="whatLabel">What Rawprint is</div>
+  <h2 class="section-title reveal" id="whatTitle">Three things, in the right order.</h2>
+  <div class="pillars">
+    <div class="pillar reveal">
+      <div class="pillar-num">01</div>
+      <div class="pillar-title">The Conversation</div>
+      <div class="pillar-body">An honest, unscripted one-hour session. No judgment. No script. You talk about whatever you've been carrying — work, relationships, patterns, childhood, dreams, fears. We listen without an agenda.</div>
+    </div>
+    <div class="pillar reveal">
+      <div class="pillar-num">02</div>
+      <div class="pillar-title">The Analysis</div>
+      <div class="pillar-body">A full psychological profile built from your session. Your patterns, your limiting beliefs, your attachment style, your energy blueprint, your blind spots. Named clearly. Without jargon.</div>
+    </div>
+    <div class="pillar reveal">
+      <div class="pillar-num">03</div>
+      <div class="pillar-title">The Blueprint</div>
+      <div class="pillar-body">A personalized life system designed for your psychology. Your habit stack, your daily structure, your 30-day action plan. Built for how you're actually wired — not for the ideal person.</div>
+    </div>
+  </div>
+</div>
+
+<div class="for-section">
+  <div class="for-inner">
+    <div class="for-quote reveal">"If you've spent years collecting advice and still feel stuck — <span>this is for you.</span>"</div>
+    <div class="for-list">
+      <div class="for-item reveal"><div class="for-marker"></div><p>You know <strong>what you should do</strong> and somehow still can't do it — and you're tired of blaming yourself for it.</p></div>
+      <div class="for-item reveal"><div class="for-marker"></div><p>You feel like you're living someone else's life but can't articulate <strong>whose it is</strong> or how you got here.</p></div>
+      <div class="for-item reveal"><div class="for-marker"></div><p>You've tried the habits, the routines, the courses — and something <strong>always breaks down</strong> around week 3.</p></div>
+      <div class="for-item reveal"><div class="for-marker"></div><p>You're not in crisis. You're just <strong>quietly exhausted</strong> by the distance between who you are and who you thought you'd be.</p></div>
+    </div>
+  </div>
+</div>
+
+<div class="fragment-section">
+  <div class="section-label reveal">Why this exists</div>
+  <div class="fragment-card reveal">
+    <div class="fragment-text">"I spent years being the person everyone said was fine. Achieving. Functioning. Showing up. And underneath all of it — a quiet, persistent feeling that I was living a life built around other people's definitions of me, not my own. I tried the habits. Read the books. Took the courses. Nothing held because none of it was built for how I was actually wired. I didn't need more discipline. I needed someone to sit with me long enough to find the version of me that existed before I learned to perform being okay. That conversation didn't exist anywhere I looked. So I built the space for it."</div>
+    <div class="fragment-meta">Rawprint — Egypt</div>
+  </div>
+</div>
+
+<div id="process" class="process-section">
+  <div class="section-label reveal">How it works</div>
+  <h2 class="section-title reveal">Simple. In order.<br>Built around you.</h2>
+  <div class="process-steps">
+    <div class="step reveal"><div class="step-num">01</div><div class="step-title">You apply</div><div class="step-body">A short form. Real questions about your life right now. Takes 8 minutes. No right answers.</div></div>
+    <div class="step reveal"><div class="step-num">02</div><div class="step-title">We meet</div><div class="step-body">One hour. Online or in person in Alexandria. Unscripted. Full privacy. You can stop anytime.</div></div>
+    <div class="step reveal"><div class="step-num">03</div><div class="step-title">You receive your blueprint</div><div class="step-body">A complete personal report — patterns, beliefs, a custom habit system, and a 30-day plan built specifically for you.</div></div>
+    <div class="step reveal"><div class="step-num">04</div><div class="step-title">You execute with support</div><div class="step-body">Weekly check-ins. Plan adjustments. A community of people doing the same honest work.</div></div>
+  </div>
+</div>
+
+<div id="apply" class="mvp-section">
+  <div class="mvp-inner">
+    <div class="mvp-tag" id="mvpTag">Limited · Free Pilot</div>
+    <h2 class="mvp-title" id="mvpTitle">5 free sessions.<br>We're just getting started.</h2>
+    <p class="mvp-body" id="mvpBody">We're running our first 5 sessions completely free. In exchange, we ask for your honesty — and permission to share your anonymized story as part of Rawprint's content. Your identity stays private. Your story might help someone else feel less alone.</p>
+    <a href="https://docs.google.com/forms/d/e/1FAIpQLSfvm2mOgBSGWS3o7q7hk3TkKM9gKb0aO88hMuTIi0la6-WX9A/viewform?usp=publish-editor" class="btn-dark" id="applyBtn" target="_blank">Apply for a free session</a>
+    <p class="mvp-note" id="applyNote">Applications reviewed within 48 hours · Full privacy · You can withdraw at any time</p>
+  </div>
+</div>
+
+<div id="pricing" class="pricing-section">
+  <div class="pricing-inner">
+    <div class="section-label reveal">Pricing</div>
+    <div class="pricing-grid">
+      <div>
+        <h2 class="section-title reveal" style="margin-bottom:32px">Choose the depth<br>that's right for you.</h2>
+        <div class="packages reveal">
+          <div class="pkg">
+            <div><div class="pkg-name">The Conversation</div><div class="pkg-desc">Session + 2-page summary + 1 habit + 15-min follow-up</div></div>
+            <div class="pkg-price"><div class="pkg-amount">500 EGP</div></div>
+          </div>
+          <div class="pkg featured">
+            <div><div class="pkg-name">The Blueprint — Growth ✦ Most chosen</div><div class="pkg-desc">Full report + 4-week follow-up + community 3 months</div></div>
+            <div class="pkg-price"><div class="pkg-amount">2,500 EGP</div><div class="pkg-dep">500 EGP deposit</div></div>
+          </div>
+          <div class="pkg">
+            <div><div class="pkg-name">The 90-Day System — Deep Work</div><div class="pkg-desc">Everything + biweekly calls + re-analysis at Day 45</div></div>
+            <div class="pkg-price"><div class="pkg-amount" style="font-size:15px;color:var(--mid)">By conversation</div><div class="pkg-dep">WhatsApp to discuss</div></div>
+          </div>
+          <div class="pkg">
+            <div><div class="pkg-name">Community Only</div><div class="pkg-desc">Life Circles + weekly prompts + partner offers</div></div>
+            <div class="pkg-price"><div class="pkg-amount">200 EGP</div><div class="pkg-dep">/ month</div></div>
+          </div>
+        </div>
+        <p style="font-size:12px;color:var(--mid);margin-top:16px;line-height:1.7">Gulf / diaspora pricing available in DM. Installments available on Blueprint and 90-Day packages.</p>
+        <a href="pricing.html" style="display:inline-block;margin-top:12px;font-size:12px;color:var(--copper);text-decoration:none;border-bottom:1px solid rgba(184,112,58,.3);padding-bottom:2px;transition:border-color .2s">See full pricing page — FAQ, availability, how to pay →</a>
+      </div>
+      <div class="pay-panel reveal">
+        <div class="qr-frame">
+          <img src="https://api.qrserver.com/v1/create-qr-code/?size=148x148&data=https://ipn.eg/S/rawprint.co/instapay/5GxEhv&color=1A1916&bgcolor=ffffff&margin=2&format=png" alt="Rawprint Instapay QR" width="148" height="148">
+        </div>
+        <div class="pay-handle">rawprint.co@instapay</div>
+        <a href="https://ipn.eg/S/rawprint.co/instapay/5GxEhv" class="pay-btn" target="_blank">Pay via Instapay →</a>
+        <p class="pay-note">Scan QR or tap to pay deposit.<br>Include your name in the note.</p>
+        <p class="pay-note" style="margin-top:4px;color:#3A3835;font-size:10px">Powered by InstaPay · Egyptian banks</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- CONTACT -->
+<section id="contact" style="padding:100px 64px;border-top:1px solid rgba(240,232,216,.07)">
+  <div style="max-width:1200px;margin:0 auto;display:grid;grid-template-columns:1fr 1fr;gap:80px;align-items:start">
+    <div class="reveal">
+      <div style="font-size:10px;font-weight:500;letter-spacing:.3em;text-transform:uppercase;color:var(--copper);margin-bottom:16px">Get in touch</div>
+      <h2 style="font-family:'Playfair Display',serif;font-size:clamp(30px,4vw,48px);font-weight:700;line-height:1.1;color:var(--parchment);margin-bottom:20px">A conversation<br><em style="font-style:italic;font-weight:400;color:var(--copper)">starts here.</em></h2>
+      <p style="font-size:15px;color:var(--mid);line-height:1.9;max-width:380px">Questions about the process, the pricing, or whether this is right for you — reach out directly. No bots. No auto-replies.</p>
+    </div>
+    <div class="reveal" style="display:flex;flex-direction:column;gap:10px">
+      <a href="mailto:hellorawprint@gmail.com" style="display:flex;align-items:center;gap:18px;padding:22px 24px;background:rgba(240,232,216,.04);border:1px solid rgba(240,232,216,.08);border-radius:2px;text-decoration:none;transition:border-color .2s,background .2s" onmouseover="this.style.borderColor='rgba(184,112,58,.45)';this.style.background='rgba(184,112,58,.06)'" onmouseout="this.style.borderColor='rgba(240,232,216,.08)';this.style.background='rgba(240,232,216,.04)'">
+        <div style="width:38px;height:38px;border-radius:50%;background:var(--copper);display:flex;align-items:center;justify-content:center;flex-shrink:0">
+          <svg width="16" height="12" viewBox="0 0 16 12" fill="none"><rect x="0.5" y="0.5" width="15" height="11" rx="1.5" stroke="#F0E8D8" stroke-width="1.2"/><path d="M1 1l7 5.5L15 1" stroke="#F0E8D8" stroke-width="1.2" stroke-linecap="round"/></svg>
+        </div>
+        <div>
+          <div style="font-size:10px;font-weight:500;letter-spacing:.18em;text-transform:uppercase;color:var(--mid);margin-bottom:3px">Email</div>
+          <div style="font-size:14px;color:var(--parchment)">hellorawprint@gmail.com</div>
+        </div>
+      </a>
+      <a href="https://wa.me/201224921659" target="_blank" style="display:flex;align-items:center;gap:18px;padding:22px 24px;background:rgba(240,232,216,.04);border:1px solid rgba(240,232,216,.08);border-radius:2px;text-decoration:none;transition:border-color .2s,background .2s" onmouseover="this.style.borderColor='rgba(184,112,58,.45)';this.style.background='rgba(184,112,58,.06)'" onmouseout="this.style.borderColor='rgba(240,232,216,.08)';this.style.background='rgba(240,232,216,.04)'">
+        <div style="width:38px;height:38px;border-radius:50%;background:var(--copper);display:flex;align-items:center;justify-content:center;flex-shrink:0">
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M8 1a7 7 0 0 1 6.06 10.47L15.5 15l-3.6-1.43A7 7 0 1 1 8 1z" stroke="#F0E8D8" stroke-width="1.2" fill="none"/><path d="M5.5 6.2c.2.6.6 1.2 1.1 1.7s1.1.9 1.7 1.1l.6-.6c.1-.1.3-.2.5-.1l1.3.4c.2.1.3.2.3.4v1.2c0 .2-.2.4-.4.4A6 6 0 0 1 4.6 5c0-.2.2-.4.4-.4h1.2c.2 0 .3.1.4.3l.4 1.3c.1.2 0 .3-.1.5l-.6.5z" stroke="#F0E8D8" stroke-width="1" fill="none"/></svg>
+        </div>
+        <div>
+          <div style="font-size:10px;font-weight:500;letter-spacing:.18em;text-transform:uppercase;color:var(--mid);margin-bottom:3px">WhatsApp</div>
+          <div style="font-size:14px;color:var(--parchment)">01224921659</div>
+        </div>
+      </a>
+      <div style="display:flex;gap:8px;margin-top:6px">
+        <a href="https://www.instagram.com/rawprint.co" target="_blank" style="flex:1;display:flex;align-items:center;justify-content:center;gap:8px;padding:12px;background:rgba(240,232,216,.04);border:1px solid rgba(240,232,216,.08);border-radius:2px;text-decoration:none;font-size:12px;font-weight:500;color:var(--mid);transition:all .2s" onmouseover="this.style.color='var(--parchment)';this.style.borderColor='rgba(240,232,216,.2)'" onmouseout="this.style.color='var(--mid)';this.style.borderColor='rgba(240,232,216,.08)'">
+          <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><rect x="1.5" y="1.5" width="11" height="11" rx="3" stroke="currentColor" stroke-width="1.2"/><circle cx="7" cy="7" r="2.5" stroke="currentColor" stroke-width="1.2"/><circle cx="10.3" cy="3.7" r=".9" fill="currentColor"/></svg>
+          Instagram
+        </a>
+        <a href="https://www.tiktok.com/@rawprint.co" target="_blank" style="flex:1;display:flex;align-items:center;justify-content:center;gap:8px;padding:12px;background:rgba(240,232,216,.04);border:1px solid rgba(240,232,216,.08);border-radius:2px;text-decoration:none;font-size:12px;font-weight:500;color:var(--mid);transition:all .2s" onmouseover="this.style.color='var(--parchment)';this.style.borderColor='rgba(240,232,216,.2)'" onmouseout="this.style.color='var(--mid)';this.style.borderColor='rgba(240,232,216,.08)'">
+          <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M9 1.2c.3 1.2 1 1.9 2.5 2.1v1.5c-.8 0-1.6-.3-2.2-.7v3.5A3.2 3.2 0 1 1 6 4.4h.4v1.6h-.4a1.6 1.6 0 0 0 0 3.2 1.6 1.6 0 0 0 1.6-1.6V1.2H9z" stroke="currentColor" stroke-width="1.1" fill="none"/></svg>
+          TikTok
+        </a>
+        <a href="https://www.youtube.com/@RAWPRINT-n6o" target="_blank" style="flex:1;display:flex;align-items:center;justify-content:center;gap:8px;padding:12px;background:rgba(240,232,216,.04);border:1px solid rgba(240,232,216,.08);border-radius:2px;text-decoration:none;font-size:12px;font-weight:500;color:var(--mid);transition:all .2s" onmouseover="this.style.color='var(--parchment)';this.style.borderColor='rgba(240,232,216,.2)'" onmouseout="this.style.color='var(--mid)';this.style.borderColor='rgba(240,232,216,.08)'">
+          <svg width="14" height="11" viewBox="0 0 14 11" fill="none"><rect x="0.5" y="0.5" width="13" height="10" rx="2" stroke="currentColor" stroke-width="1.1"/><path d="M5.5 3.5l4 2-4 2v-4z" fill="currentColor"/></svg>
+          YouTube
+        </a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="footer-inner">
+    <div>
+      <div class="footer-brand">Rawprint</div>
+      <p class="footer-tagline">Design a life that fits who you are. Understand yourself. Then build.</p>
+      <div style="display:flex;gap:8px;margin-top:18px">
+        <a href="https://www.instagram.com/rawprint.co" target="_blank" aria-label="Instagram" style="width:32px;height:32px;background:rgba(240,232,216,.05);border:1px solid rgba(240,232,216,.1);border-radius:2px;display:flex;align-items:center;justify-content:center;text-decoration:none;transition:border-color .2s" onmouseover="this.style.borderColor='rgba(184,112,58,.5)'" onmouseout="this.style.borderColor='rgba(240,232,216,.1)'">
+          <svg width="13" height="13" viewBox="0 0 14 14" fill="none"><rect x="1.5" y="1.5" width="11" height="11" rx="3" stroke="#6B6760" stroke-width="1.2"/><circle cx="7" cy="7" r="2.5" stroke="#6B6760" stroke-width="1.2"/><circle cx="10.3" cy="3.7" r=".9" fill="#6B6760"/></svg>
+        </a>
+        <a href="https://www.tiktok.com/@rawprint.co" target="_blank" aria-label="TikTok" style="width:32px;height:32px;background:rgba(240,232,216,.05);border:1px solid rgba(240,232,216,.1);border-radius:2px;display:flex;align-items:center;justify-content:center;text-decoration:none;transition:border-color .2s" onmouseover="this.style.borderColor='rgba(184,112,58,.5)'" onmouseout="this.style.borderColor='rgba(240,232,216,.1)'">
+          <svg width="13" height="13" viewBox="0 0 14 14" fill="none"><path d="M9 1.2c.3 1.2 1 1.9 2.5 2.1v1.5c-.8 0-1.6-.3-2.2-.7v3.5A3.2 3.2 0 1 1 6 4.4h.4v1.6h-.4a1.6 1.6 0 0 0 0 3.2 1.6 1.6 0 0 0 1.6-1.6V1.2H9z" stroke="#6B6760" stroke-width="1.1" fill="none"/></svg>
+        </a>
+        <a href="https://wa.me/201224921659" target="_blank" aria-label="WhatsApp" style="width:32px;height:32px;background:rgba(240,232,216,.05);border:1px solid rgba(240,232,216,.1);border-radius:2px;display:flex;align-items:center;justify-content:center;text-decoration:none;transition:border-color .2s" onmouseover="this.style.borderColor='rgba(184,112,58,.5)'" onmouseout="this.style.borderColor='rgba(240,232,216,.1)'">
+          <svg width="13" height="13" viewBox="0 0 14 14" fill="none"><path d="M7 .5a6.5 6.5 0 0 1 5.63 9.75L14 13.5l-3.38-1.34A6.5 6.5 0 1 1 7 .5z" stroke="#6B6760" stroke-width="1.1" fill="none"/></svg>
+        </a>
+        <a href="https://www.youtube.com/@RAWPRINT-n6o" target="_blank" aria-label="YouTube" style="width:32px;height:32px;background:rgba(240,232,216,.05);border:1px solid rgba(240,232,216,.1);border-radius:2px;display:flex;align-items:center;justify-content:center;text-decoration:none;transition:border-color .2s" onmouseover="this.style.borderColor='rgba(184,112,58,.5)'" onmouseout="this.style.borderColor='rgba(240,232,216,.1)'">
+          <svg width="13" height="10" viewBox="0 0 14 10" fill="none"><rect x="0.5" y="0.5" width="13" height="9" rx="2" stroke="#6B6760" stroke-width="1.1"/><path d="M5.5 3l4 2-4 2V3z" fill="#6B6760"/></svg>
+        </a>
+      </div>
+    </div>
+    <div class="footer-links">
+      <a href="#what">What it is</a>
+      <a href="#process">How it works</a>
+      <a href="#pricing">Pricing</a>
+      <a href="#contact">Contact</a>
+      <a href="#apply">Apply</a>
+      <a href="privacy.html">Privacy Policy</a>
+    </div>
+    <div class="footer-disclaimer">Rawprint is a life design project — not a clinical therapy service, not a diagnosis tool. If themes in your session suggest the value of professional support, we'll say so clearly.</div>
+  </div>
+  <div class="footer-bottom">
+    <span>© 2025 Rawprint · Egypt</span>
+    <span>hellorawprint@gmail.com · 01224921659</span>
+  </div>
+</footer>
+
+<script>
+const reveals = document.querySelectorAll('.reveal');
+const obs = new IntersectionObserver(entries => {
+  entries.forEach(e => { if(e.isIntersecting) e.target.classList.add('visible'); });
+}, {threshold: 0.1});
+reveals.forEach(el => obs.observe(el));
+
+
+</script>
+</body>
+</html>
